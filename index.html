@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LifeQuest</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div id="app">
+    <header>
+      <h1>LifeQuest</h1>
+    </header>
+
+    <section id="master-wisdom"></section>
+
+    <section id="hero">
+      <div id="character-panel">
+        <canvas id="character-canvas" width="256" height="256"></canvas>
+        <div id="character-info">
+          <span id="character-title">Level 1 Adventurer</span>
+          <button id="codex-btn" class="small-btn" title="The Master's Codex">Codex</button>
+        </div>
+        <div id="level-up-overlay" class="hidden">
+          <span>LEVEL UP!</span>
+        </div>
+      </div>
+      <div id="stats-panel">
+        <div class="stat-row" data-stat="STR">
+          <span class="stat-icon">&#9876;</span>
+          <span class="stat-name">STR</span>
+          <div class="stat-bar"><div class="stat-fill"></div></div>
+          <span class="stat-level">1</span>
+        </div>
+        <div class="stat-row" data-stat="INT">
+          <span class="stat-icon">&#9733;</span>
+          <span class="stat-name">INT</span>
+          <div class="stat-bar"><div class="stat-fill"></div></div>
+          <span class="stat-level">1</span>
+        </div>
+        <div class="stat-row" data-stat="CRE">
+          <span class="stat-icon">&#9827;</span>
+          <span class="stat-name">CRE</span>
+          <div class="stat-bar"><div class="stat-fill"></div></div>
+          <span class="stat-level">1</span>
+        </div>
+        <div class="stat-row" data-stat="VIT">
+          <span class="stat-icon">&#9829;</span>
+          <span class="stat-name">VIT</span>
+          <div class="stat-bar"><div class="stat-fill"></div></div>
+          <span class="stat-level">1</span>
+        </div>
+        <div class="stat-row" data-stat="WIL">
+          <span class="stat-icon">&#9672;</span>
+          <span class="stat-name">WIL</span>
+          <div class="stat-bar"><div class="stat-fill"></div></div>
+          <span class="stat-level">1</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="quests">
+      <div id="quests-header">
+        <h2>Today's Quests</h2>
+        <span id="today-date"></span>
+      </div>
+      <div id="buff-bar"></div>
+      <ul id="habit-list"></ul>
+      <div id="quest-actions">
+        <button id="rest-day-btn" title="Take a rest day">Rest Day</button>
+        <button id="add-habit-btn" title="Add a new habit">+ Add Habit</button>
+      </div>
+    </section>
+
+    <div id="adventure-gate" class="hidden"></div>
+
+    <section id="streak-bar">
+      <span id="streak-text"></span>
+    </section>
+
+    <section id="achievements-bar">
+      <div id="badges"></div>
+    </section>
+
+    <section id="boss-section" class="hidden">
+      <div id="boss-header">
+        <span id="boss-name"></span>
+        <button id="boss-set-btn" class="small-btn">Set Goal</button>
+      </div>
+      <div id="boss-bar-container">
+        <div id="boss-bar-fill"></div>
+        <span id="boss-progress-text"></span>
+      </div>
+    </section>
+
+    <!-- Add Habit Modal -->
+    <div id="modal-overlay" class="hidden">
+      <div id="modal">
+        <h3 id="modal-title">Add New Habit</h3>
+        <label>Name
+          <input type="text" id="habit-name-input" placeholder="e.g. Morning workout" maxlength="40">
+        </label>
+        <label>Target
+          <input type="text" id="habit-target-input" placeholder="e.g. 30 min, 2L, 10 reps" maxlength="20">
+        </label>
+        <label>Stat
+          <select id="habit-stat-input">
+            <option value="STR">STR - Strength</option>
+            <option value="INT">INT - Intelligence</option>
+            <option value="CRE">CRE - Creativity</option>
+            <option value="VIT">VIT - Vitality</option>
+            <option value="WIL">WIL - Willpower</option>
+          </select>
+        </label>
+        <label>XP Reward
+          <select id="habit-xp-input">
+            <option value="1">1 - Easy</option>
+            <option value="1.5" selected>1.5 - Medium</option>
+            <option value="2">2 - Hard</option>
+            <option value="2.5">2.5 - Epic</option>
+          </select>
+        </label>
+        <div id="modal-actions">
+          <button id="modal-cancel">Cancel</button>
+          <button id="modal-save">Save</button>
+        </div>
+        <button id="modal-delete" class="hidden">Delete Habit</button>
+      </div>
+    </div>
+
+    <!-- Boss Goal Modal -->
+    <div id="boss-modal-overlay" class="hidden">
+      <div id="modal">
+        <h3>Set Monthly Boss</h3>
+        <label>Boss Name
+          <input type="text" id="boss-name-input" placeholder="e.g. Iron Will" maxlength="30">
+        </label>
+        <label>Target (completions this month)
+          <input type="number" id="boss-target-input" min="1" max="999" value="20">
+        </label>
+        <div id="modal-actions">
+          <button id="boss-modal-cancel">Cancel</button>
+          <button id="boss-modal-save">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Onboarding -->
+    <div id="onboarding-overlay" class="hidden">
+      <div id="onboarding">
+        <h2>Welcome, Adventurer!</h2>
+        <p>Your journey begins here. Every habit you complete makes your character stronger.</p>
+        <p>Start by adding a few daily quests — small wins count!</p>
+        <div class="onboarding-stats">
+          <span>&#9876; STR</span> <span>&#9733; INT</span> <span>&#9827; CRE</span> <span>&#9829; VIT</span> <span>&#9672; WIL</span>
+        </div>
+        <button id="onboarding-start">Begin Quest</button>
+      </div>
+    </div>
+
+    <!-- Teaching Modal -->
+    <div id="teaching-modal" class="hidden"></div>
+
+    <!-- Adventure Overlay -->
+    <div id="adventure-overlay" class="hidden">
+      <div id="adventure-container"></div>
+    </div>
+
+    <footer>
+      <button id="export-btn" class="small-btn">Export</button>
+      <button id="import-btn" class="small-btn">Import</button>
+      <button id="reset-btn" class="small-btn danger-btn">Reset</button>
+      <input type="file" id="import-file" accept=".json" class="hidden">
+    </footer>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
